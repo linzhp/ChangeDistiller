@@ -49,60 +49,44 @@ public final class MatchingFactory {
      * @return the tree matcher out of specified preference values
      */
     public static ITreeMatcher getMatcher(Set<NodePair> matchingSet) {
-        IPreferenceStore store = ChangeDistillerPlugin.getDefault().getPreferenceStore();
 
         // leaf matching
-        String leaf = store.getString(IChangeDistillerPreferenceConstants.LEAF_STRING_SIM);
-        IStringSimilarityCalculator leafCalc = getStringSimilarityMeasure(store, leaf);
+        String leaf = IChangeDistillerPreferenceConstants.PREF_STRING_SIM_NGRAMS;
+        IStringSimilarityCalculator leafCalc = getStringSimilarityMeasure(null, leaf);
         if (leafCalc instanceof NGramsCalculator) {
-            ((NGramsCalculator) leafCalc).setN(store.getInt(IChangeDistillerPreferenceConstants.LEAF_NGRAMS_VALUE));
+            ((NGramsCalculator) leafCalc).setN(2);
         }
 
-        double lTh = store.getDouble(IChangeDistillerPreferenceConstants.LEAF_STRING_SIM_THRESHOLD);
+        double lTh = 0.6;
 
         // node string matching
         IStringSimilarityCalculator nodeStringCalc = leafCalc;
         double nStTh = lTh;
-        if (store.getBoolean(IChangeDistillerPreferenceConstants.NODE_STRING_SIM_ENABLEMENT)) {
-            String nodeString = store.getString(IChangeDistillerPreferenceConstants.NODE_STRING_SIM);
-            nodeStringCalc = getStringSimilarityMeasure(store, nodeString);
-            if (nodeStringCalc instanceof NGramsCalculator) {
-                ((NGramsCalculator) nodeStringCalc).setN(store
-                        .getInt(IChangeDistillerPreferenceConstants.NODE_STRING_SIM_NGRAMS_VALUE));
-            }
-
-            nStTh = store.getDouble(IChangeDistillerPreferenceConstants.NODE_STRING_SIM_THRESHOLD);
-        }
+//        if (store.getBoolean(IChangeDistillerPreferenceConstants.NODE_STRING_SIM_ENABLEMENT)) {
+//            String nodeString = store.getString(IChangeDistillerPreferenceConstants.NODE_STRING_SIM);
+//            nodeStringCalc = getStringSimilarityMeasure(store, nodeString);
+//            if (nodeStringCalc instanceof NGramsCalculator) {
+//                ((NGramsCalculator) nodeStringCalc).setN(store
+//                        .getInt(IChangeDistillerPreferenceConstants.NODE_STRING_SIM_NGRAMS_VALUE));
+//            }
+//
+//            nStTh = store.getDouble(IChangeDistillerPreferenceConstants.NODE_STRING_SIM_THRESHOLD);
+//        }
 
         // node matching
-        String node = store.getString(IChangeDistillerPreferenceConstants.NODE_SIM);
         INodeSimilarityCalculator nodeCalc = null;
-        if (node.equals(IChangeDistillerPreferenceConstants.PREF_NODE_SIM_CHAWATHE)) {
-            nodeCalc = new ChawatheCalculator();
-        } else if (node.equals(IChangeDistillerPreferenceConstants.PREF_NODE_SIM_DICE)) {
-            nodeCalc = new DiceNodeSimilarity(nodeStringCalc, nStTh);
-        }
+        nodeCalc = new ChawatheCalculator();
         nodeCalc.setLeafMatchSet(matchingSet);
 
-        double nTh = store.getDouble(IChangeDistillerPreferenceConstants.NODE_SIM_THRESHOLD);
+        double nTh = 0.6;
 
         // best match
-        String match = store.getString(IChangeDistillerPreferenceConstants.LEAF_MATCHING);
         ITreeMatcher result = null;
-        if (match.equals(IChangeDistillerPreferenceConstants.PREF_LEAF_MATCHING_BEST)) {
-            result = new BestLeafTreeMatcher();
-        } else {
-            result = new DefaultTreeMatcher();
-        }
+        result = new BestLeafTreeMatcher();
         result.init(leafCalc, lTh, nodeStringCalc, nStTh, nodeCalc, nTh);
 
         // dynamic threshold
-        if (store.getBoolean(IChangeDistillerPreferenceConstants.DYNAMIC_THRESHOLD_ENABLEMENT)) {
-            result.enableDynamicThreshold(store.getInt(IChangeDistillerPreferenceConstants.DEPTH_VALUE), store
-                    .getDouble(IChangeDistillerPreferenceConstants.DYNAMIC_THRESHOLD));
-        } else {
-            result.disableDynamicThreshold();
-        }
+        result.enableDynamicThreshold(4, 0.4);
         result.setMatchingSet(matchingSet);
         return result;
     }
