@@ -3,7 +3,6 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/simpack-647-bin.jar"/>
-	<classpathentry kind="lib" path="/usr/local/eclipse/plugins/org.eclipse.core.resources_3.6.1.R36x_v20110131-1630.jar"/>
 	<classpathentry kind="lib" path="lib/org.evolizer.changedistiller.model_2.0.0.jar"/>
 	<classpathentry kind="lib" path="lib/org.eclipse.compare_3.5.101.R36x_v20100929-0800.jar"/>
 	<classpathentry kind="lib" path="lib/org.eclipse.core.runtime_3.6.0.v20100505.jar"/>
@@ -26,5 +25,6 @@
 	<classpathentry kind="lib" path="lib/org.evolizer.core.logging_2.0.0.jar"/>
 	<classpathentry kind="lib" path="lib/org.eclipse.equinox.preferences_3.3.0.v20100503.jar"/>
 	<classpathentry kind="lib" path="lib/org.eclipse.jdt.ui_3.6.2.r362_v20110203.jar"/>
+	<classpathentry kind="lib" path="lib/org.eclipse.core.resources_3.6.1.R36x_v20110131-1630.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
