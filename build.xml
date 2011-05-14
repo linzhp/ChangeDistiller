@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- WARNING: Eclipse auto-generated file.
+              Any modifications will be overwritten.
+              To include a user specific buildfile here, simply create one in the same
+              directory with the processing instruction <?eclipse.ant.import?>
+              as the first entry and export the buildfile again. -->
+<project basedir="." default="build" name="changedistiller">
+    <property environment="env"/>
+    <property name="CommitExtractor.location" value="../CommitExtractor"/>
+    <property name="debuglevel" value="source,lines,vars"/>
+    <property name="target" value="1.6"/>
+    <property name="source" value="1.6"/>
+    <path id="changedistiller.classpath">
+        <pathelement location="bin"/>
+        <pathelement location="lib/simpack-647-bin.jar"/>
+        <pathelement location="lib/org.evolizer.changedistiller.model_2.0.0.jar"/>
+        <pathelement location="lib/org.eclipse.compare_3.5.101.R36x_v20100929-0800.jar"/>
+        <pathelement location="lib/org.eclipse.core.runtime_3.6.0.v20100505.jar"/>
+        <pathelement location="lib/log4j-1.2.16.jar"/>
+        <pathelement location="lib/org.eclipse.equinox.common_3.6.0.v20100503.jar"/>
+        <pathelement location="lib/org.eclipse.jdt.core_3.6.2.v_A76_R36x.jar"/>
+        <pathelement location="lib/org.eclipse.core.jobs_3.5.1.R36x_v20100824.jar"/>
+        <pathelement location="lib/org.eclipse.ui.workbench_3.6.2.M20110210-1200.jar"/>
+        <pathelement location="lib/org.eclipse.jface_3.6.2.M20110210-1200.jar"/>
+        <pathelement location="lib/org.eclipse.osgi_3.6.2.R36x_v20110210.jar"/>
+        <pathelement location="lib/org.eclipse.swt_3.6.2.v3659c.jar"/>
+        <pathelement location="lib/org.eclipse.swt.gtk.linux.x86_3.6.2.v3659b.jar"/>
+        <pathelement location="lib/org.evolizer.versioncontrol.cvs.model_2.0.0.jar"/>
+        <pathelement location="lib/org.evolizer.model.resources_2.0.0.jar"/>
+        <pathelement location="lib/org.eclipse.core.commands_3.6.0.I20100512-1500.jar"/>
+        <pathelement location="lib/org.evolizer.core.hibernate_2.0.0.jar"/>
+        <pathelement location="lib/org.evolizer.core_2.0.0.jar"/>
+        <pathelement location="lib/org.eclipse.text_3.5.0.v20100601-1300.jar"/>
+        <pathelement location="lib/org.evolizer.core.util_2.0.0.jar"/>
+        <pathelement location="lib/org.evolizer.core.logging_2.0.0.jar"/>
+        <pathelement location="lib/org.eclipse.equinox.preferences_3.3.0.v20100503.jar"/>
+        <pathelement location="lib/org.eclipse.jdt.ui_3.6.2.r362_v20110203.jar"/>
+        <pathelement location="lib/org.eclipse.core.resources_3.6.1.R36x_v20110131-1630.jar"/>
+    </path>
+    <target name="init">
+        <mkdir dir="bin"/>
+        <copy includeemptydirs="false" todir="bin">
+            <fileset dir="src">
+                <exclude name="**/*.launch"/>
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="clean">
+        <delete dir="bin"/>
+    </target>
+    <target depends="clean" name="cleanall"/>
+    <target depends="build-subprojects,build-project" name="build"/>
+    <target name="build-subprojects"/>
+    <target depends="init" name="build-project">
+        <echo message="${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" debuglevel="${debuglevel}" destdir="bin" source="${source}" target="${target}">
+            <src path="src"/>
+            <classpath refid="changedistiller.classpath"/>
+        </javac>
+    </target>
+    <target description="Build all projects which reference this project. Useful to propagate changes." name="build-refprojects">
+        <ant antfile="build.xml" dir="${CommitExtractor.location}" inheritAll="false" target="clean"/>
+        <ant antfile="build.xml" dir="${CommitExtractor.location}" inheritAll="false" target="build"/>
+    </target>
+</project>
